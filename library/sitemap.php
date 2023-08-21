@@ -3,14 +3,14 @@
 $db = Typecho_Db::get();
 $options = Typecho_Widget::widget('Widget_Options');
 $limit = Helper::options()->JSiteMap;
-$pages = $db->fetchAll(
-    $db->select()->from('table.contents')
-        ->where('table.contents.status = ?', 'publish')
-        ->where('table.contents.created < ?', $options->gmtTime)
-        ->where('table.contents.type = ?', 'page')
-        ->limit($limit)
-        ->order('table.contents.created', Typecho_Db::SORT_DESC)
-);
+// $pages = $db->fetchAll(
+//     $db->select()->from('table.contents')
+//         ->where('table.contents.status = ?', 'publish')
+//         ->where('table.contents.created < ?', $options->gmtTime)
+//         ->where('table.contents.type = ?', 'page')
+//         ->limit($limit)
+//         ->order('table.contents.created', Typecho_Db::SORT_DESC)
+// );
 $articles = $db->fetchAll(
     $db->select()->from('table.contents')
         ->where('table.contents.status = ?', 'publish')
@@ -22,18 +22,18 @@ $articles = $db->fetchAll(
 header("Content-Type: application/xml");
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 echo "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
-foreach ($pages as $page) {
-    $type = $page['type'];
-    $routeExists = (NULL != Typecho_Router::get($type));
-    $page['pathinfo'] = $routeExists ? Typecho_Router::url($type, $page) : '#';
-    $page['permalink'] = Typecho_Common::url($page['pathinfo'], $options->index);
-    echo "\t<url>\n";
-    echo "\t\t<loc>" . $page['permalink'] . "</loc>\n";
-    echo "\t\t<lastmod>" . date('Y-m-d\TH:i:s\Z', $page['modified']) . "</lastmod>\n";
-    echo "\t\t<changefreq>monthly</changefreq>\n";
-    echo "\t\t<priority>0.8</priority>\n";
-    echo "\t</url>\n";
-}
+// foreach ($pages as $page) {
+//     $type = $page['type'];
+//     $routeExists = (NULL != Typecho_Router::get($type));
+//     $page['pathinfo'] = $routeExists ? Typecho_Router::url($type, $page) : '#';
+//     $page['permalink'] = Typecho_Common::url($page['pathinfo'], $options->index);
+//     echo "\t<url>\n";
+//     echo "\t\t<loc>" . $page['permalink'] . "</loc>\n";
+//     echo "\t\t<lastmod>" . date('Y-m-d\TH:i:s\Z', $page['modified']) . "</lastmod>\n";
+//     echo "\t\t<changefreq>monthly</changefreq>\n";
+//     echo "\t\t<priority>0.8</priority>\n";
+//     echo "\t</url>\n";
+// }
 foreach ($articles as $article) {
     $type = $article['type'];
     $article['categories'] = $db->fetchAll($db->select()->from('table.metas')
